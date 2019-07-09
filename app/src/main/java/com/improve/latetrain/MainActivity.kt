@@ -4,23 +4,23 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
-import com.chani.latetrain.R
+import com.improve.latetrain.R
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var textMessage: TextView
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_home -> {
-                textMessage.setText(R.string.title_home)
+            R.id.navigation_add_mins -> {
+                supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, AddMinsFragment()).commit()
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
-                textMessage.setText(R.string.title_dashboard)
+            R.id.navigation_history -> {
+                supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, HistoryFragment()).commit()
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_notifications -> {
-                textMessage.setText(R.string.title_notifications)
+            R.id.navigation_complaints -> {
+                supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, ComplaintsFragment()).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -32,7 +32,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        textMessage = findViewById(R.id.message)
+        //Get reference to firebase database at "Messages"
+        val instance = FirebaseDatabase.getInstance()
+
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        navView.selectedItemId = R.id.navigation_add_mins
     }
 }
